@@ -85,11 +85,11 @@
     "toastr": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=8000 build",
+    "start": "npm run-script run",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "npm run build"
+    "run": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
