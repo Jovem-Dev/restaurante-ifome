@@ -24,9 +24,12 @@ class PromocaoDetalhe extends Component {
   
 
     async componentDidMount() {
-        const response = await api.get(`/api/promocoes/get/${this.props.id}/${storageLogado}`)
-        this.setState({ promocoes: response.data })
-        console.log(response.data)
+        fetch(`https://api.ifome.net/api/promocoes/get/${this.props.id}/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            this.setState({ promocoes: data })
+        })
+       
     }
     constructor() {
         super();
