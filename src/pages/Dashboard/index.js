@@ -41,7 +41,7 @@ function Dashboard() {
    
     useEffect(() => {
              
-        fetch(`/api/get/todos/${storageLogado}}`)
+        fetch(`https://api.ifome.net/api/get/todos/${storageLogado}`)
         .then( res => res.json())
         .then((data) =>{
             setCount(data)
