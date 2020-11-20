@@ -56,6 +56,11 @@ function Dashboard() {
         .then((data) =>{
             setCountVendasEntregues(data)
         })
+        fetch(`https://api.ifome.net/api/pedidos/count/vendas/pendentes/grafico/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCountVendasPendentes(data)
+        })
         fetch(`https://api.ifome.net/api/pedidos/count/vendas/andamento/grafico/${storageLogado}`)
         .then( res => res.json())
         .then((data) =>{
