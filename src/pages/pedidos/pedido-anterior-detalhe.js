@@ -13,6 +13,7 @@ const excluir = (id) => {
     api.delete(`/api/pedidos/delete/anterior/${id}` )
     window.location.href('./pedidos-entregues')
 }
+var storageLogado = localStorage.getItem('usuarioLogado')
 class PedidoAnteriorDetalhe extends Component {
     
     state = {
@@ -21,9 +22,11 @@ class PedidoAnteriorDetalhe extends Component {
     
 
     async componentDidMount() {
-        const response = await api.get(`/api/pedidos/get/anterior/${this.props.id}`)
-        this.setState({ pedidosAnteriores: response.data })
-        console.log(response.data)
+        fetch(`https://api.ifome.net/api/get/anterior/${this.props.id}`)
+        .then( res => res.json())
+        .then((data) =>{
+            this.setState({ pedidosAnteriores: data })
+        })
     }
     constructor() {
         super();

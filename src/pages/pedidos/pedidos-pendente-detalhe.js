@@ -18,9 +18,11 @@ class PedidosPendenteDetalhe extends Component {
   
 
     async componentDidMount() {
-        const response = await api.get(`/api/get/pendente/${storageLogado}`)
-        this.setState({ pedidosPendente: response.data })
-        console.log(response.data)
+        fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            this.setState({ pedidosPendete: data })
+        })
         
        
     }

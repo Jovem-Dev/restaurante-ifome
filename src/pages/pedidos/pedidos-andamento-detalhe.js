@@ -17,9 +17,11 @@ class PedidosAndamentoDetalhe extends Component {
   
 
     async componentDidMount() {
-        const response = await api.get(`/api/pedidos/get/${this.props.id}`)
-        this.setState({ pedidosAndamento: response.data })
-        console.log(response.data)
+        fetch(`https://api.ifome.net/api/pedidos/get/${this.props.id}`)
+        .then( res => res.json())
+        .then((data) =>{
+            this.setState({ pedidosAndamento: data })
+        })
         
        
     }
