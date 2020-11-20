@@ -40,33 +40,36 @@ function Dashboard() {
     const url = `/api/get/todos/${storageLogado}`
    
     useEffect(() => {
-        api.get(`/api/get/todos/${storageLogado}`).then((response) => {
-            setCount(response.data)
-
+             
+        fetch(`/api/get/todos/${storageLogado}}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCount(data)
         })
-        api.get(`/api/pedidos/count/vendas/${storageLogado}`).then((response) => {
-            setCountVendas(response.data)
-
+        fetch(`https://api.ifome.net/api/pedidos/count/vendas/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCountVendas(data)
         })
-        api.get(`/api/pedidos/count/vendas/pendentes/grafico/${storageLogado}`).then((response) => {
-            setCountVendasPendentes(response.data)
-
+        fetch(`https://api.ifome.net/api/pedidos/count/vendas/entegues/grafico/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCountVendasEntregues(data)
         })
-        api.get(`/api/pedidos/count/vendas/entegues/grafico/${storageLogado}`).then((response) => {
-            setCountVendasEntregues(response.data)
-
+        fetch(`https://api.ifome.net/api/pedidos/count/vendas/andamento/grafico/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCountVendasAndamento(data)
         })
-        api.get(`/api/pedidos/count/vendas/andamento/grafico/${storageLogado}`).then((response) => {
-            setCountVendasAndamento(response.data)
-
+        fetch(`https://api.ifome.net/api/pedidos/vendas/mes/grafico/${mesAtual}/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setCountVendasMesAtual(data)
         })
-        api.get(`/api/pedidos/vendas/mes/grafico/${mesAtual}/${storageLogado}`).then((response) => {
-            setCountVendasMesAtual(response.data)
-
-        })
-        api.get(`/api/get/mesAtual/${mesAtual}/${storageLogado}`).then((response) => {
-            setVendasMesAtual(response.data)
-
+        fetch(`https://api.ifome.net/api/get/mesAtual/${mesAtual}/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setVendasMesAtual(data)
         })
         fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
         .then( res => res.json())
