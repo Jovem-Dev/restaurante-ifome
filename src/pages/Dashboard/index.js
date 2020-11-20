@@ -68,13 +68,12 @@ function Dashboard() {
             setVendasMesAtual(response.data)
 
         })
-
-        api.get(`/api/get/pendente/${storageLogado}`).then((response) => {
-            setPedidosPendentes(response.data)
-
+        fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            setPedidosPendentes(data)
         })
-
-
+    
     }, [])
 
     const valorPedidos = count.map(count => (count.valor))
@@ -135,7 +134,6 @@ function Dashboard() {
                         <Alert color="success" role="alert">
                             <i className="mdi mdi-check-all mr-2"></i>
                             Você tem um novo pedido pendente
-                            <Button onClick={() => { FecharNotificacao(storageLogado) }} type="button" color="primary" size="sm" className="btn btn-success float-right close"> <span aria-hidden="true">&times;</span></Button>
                         </Alert>
                     ) : (
                             console.log('')
