@@ -24,9 +24,11 @@ class LatestTranaction extends Component {
     }
 
     async componentDidMount() {
-        const response = await api.get(`/api/get/pendente/${storageLogado}`)
-        this.setState({ pedidos: response.data })
-        console.log(response.data)
+        fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
+        .then( res => res.json())
+        .then((data) =>{
+            this.setState({ pedidos: data })
+        })
     }
 
 
