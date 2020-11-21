@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Card,Alert, CardBody,Media, Button } from "reactstrap";
+import { Container, Row, Col, Card, Alert, CardBody, Media, Button } from "reactstrap";
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from 'availity-reactstrap-validation';
@@ -15,12 +15,11 @@ import avatar from '../../assets/images/users/avatar-1.jpg';
 // actions
 import { editProfile } from '../../store/actions';
 
+const storageLogado = localStorage.getItem("usuarioLogado")
 class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {email : "", name : "", idx : 1 }
-
         // handleValidSubmit
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
     }
@@ -30,77 +29,67 @@ class UserProfile extends Component {
         this.props.editProfile(values);
     }
 
-    componentDidMount(){
-        if(localStorage.getItem("usuarioLogado")){
+    state = {
+        restauranteLogado: []
+    }
+    ///api/restaurantes/get/:nom
+    componentDidMount() {
+        if (storageLogado) {
+            fetch(`https://api.ifome.net/api/restaurantes/get/${storageLogado}`)
+                .then(res => res.json())
+                .then((data) => {
+                    console.log(data)
+                    this.setState({ restauranteLogado: data })
+                })
+        } else {
 
         }
-    
-    }
-    componentDidUpdate(prevProps, prevState) {
-        
-     
+
     }
 
     render() {
+        const { restauranteLogado } = this.state;
 
         return (
-           <React.Fragment>
+            <React.Fragment>
                 <div className="page-content">
                     <Container fluid>
 
                         {/* Render Breadcrumb */}
                         <Breadcrumb title="Skote" breadcrumbItem="Profile" />
 
-                         <Row>
+                        <Row>
                             <Col lg="12">
-                             {this.props.error && this.props.error ? <Alert color="danger">{this.props.error}</Alert> : null}
-                             {this.props.success && this.props.success ? <Alert color="success">{this.props.success}</Alert> : null}
-
                                 <Card>
-                                    <CardBody>
-                                        <Media>
-                                            <div className="mr-3">
-                                                <img src={avatar} alt="" className="avatar-md rounded-circle img-thumbnail"/>
-                                            </div>
-                                            <Media body className="align-self-center">
-                                                <div className="text-muted">
-                                                    <h5>{this.state.name}</h5>
-                                                    <p className="mb-1">{this.state.email}</p>
-                                                    <p className="mb-0">Id no: #{this.state.idx}</p>
+                                    {restauranteLogado.map(restaurante => (
+                                        <CardBody>
+                                            <Media>
+                                                <div className="mr-3">
+                                                    <img src={restaurante.url} alt="" className="avatar-md rounded-circle img-thumbnail" />
                                                 </div>
+                                                <Media body className="align-self-center">
+                                                    <div className="text-muted">
+                                                        <h5>{restaurante.nome}</h5>
+                                                        <p className="mb-1">{restaurante.categoria}</p>
+                                                        <p className="mb-0">Id: #{restaurante.id}</p>
+                                                    </div>
+                                                </Media>
                                             </Media>
-                                        </Media>
-                                    </CardBody>
+                                        </CardBody>
+                                    ))}
                                 </Card>
                             </Col>
                         </Row>
-
-                        <h4 className="card-title mb-4">Change UserName</h4>
-
-                        <Card>
-                            <CardBody>
-                               <AvForm className="form-horizontal" onValidSubmit={(e,v) => { this.handleValidSubmit(e,v) }}>
-                                    <div className="form-group">
-                                         <AvField name="username" label="UserName" value={this.state.name} className="form-control" placeholder="Enter UserName" type="text" required />
-                                         <AvField name="idx"  value={this.state.idx}  type="hidden"  />
-                                    </div>
-                                     <div className="text-center mt-4">
-                                         <Button type="submit" color="danger">Edit UserName</Button>
-                                    </div>
-                               </AvForm>
-                            
-                            </CardBody>
-                        </Card>
                     </Container>
                 </div>
             </React.Fragment>
         );
     }
 }
-            
+
 const mapStatetoProps = state => {
-    const { error,success } = state.Profile;
-    return { error,success };
+    const { error, success } = state.Profile;
+    return { error, success };
 }
 
 export default withRouter(connect(mapStatetoProps, { editProfile })(UserProfile));
