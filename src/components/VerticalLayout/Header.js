@@ -117,7 +117,7 @@ class Header extends Component {
             </div>
             <div className="d-flex">
         
-              <NotificationDropdown />
+          
               <ProfileMenu />
 
             </div>
