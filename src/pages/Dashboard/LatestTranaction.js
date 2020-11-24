@@ -9,12 +9,14 @@ const EditPedido = (id) => {
     api.put(`api/put/pendente/${id}/${storageLogado}`).then((err, result) => {
         console.log('Editado com sucesso')
         window.location.href = "/dashboard"
+        document.location.reload(true)
     })
 };
 const DeletePedido = (id) => {
     api.delete(`api/delete/${id}/${storageLogado}`).then((err, result) => {
         console.log('Editado com sucesso')
         window.location.href = "/dashboard"
+        document.location.reload(true)
     })
 }
 
@@ -25,10 +27,10 @@ class LatestTranaction extends Component {
 
     async componentDidMount() {
         fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ pedidos: data })
-        })
+            .then(res => res.json())
+            .then((data) => {
+                this.setState({ pedidos: data })
+            })
     }
 
 
@@ -81,7 +83,7 @@ class LatestTranaction extends Component {
                                                     </Button>
                                                 <Button onClick={() => { DeletePedido(pedido.id) }} type="danger" color="primary" size="sm" className="btn-rounded btn-danger waves-effect waves-light ml-2" >
                                                     Recusar
-                                                    </Button>
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -89,6 +91,7 @@ class LatestTranaction extends Component {
                                 </tbody>
                             </table>
                         </div>
+                       
                     </CardBody>
                 </Card>
             </React.Fragment>

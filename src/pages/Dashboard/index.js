@@ -138,7 +138,7 @@ function Dashboard() {
 
                     {/* Render Breadcrumb */}
                     <Breadcrumbs title='Dashboard' />
-                    {pedidosPendentes.notificacao = "sim" ? (
+                    {pedidosPendentes != '' ? (
                         <Alert color="success" role="alert">
                             <i className="mdi mdi-check-all mr-2"></i>
                             Você tem um novo pedido pendente
