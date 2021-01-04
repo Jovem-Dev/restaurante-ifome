@@ -92,8 +92,7 @@ class PedidosPendenteDetalhe extends Component {
                                             <div className="d-print-none">
                                                 <div className="float-left">
                                                     <Link to="#" onClick={this.printInvoice} className="btn btn-success waves-effect waves-light mr-2"><i className="fa fa-print"></i></Link>
-                                                    <Link to="#" className="btn btn-primary w-md waves-effect waves-light">Editar</Link>
-                                                    
+                                                                                                       
                                                 </div>
                                             </div>
                                         </CardBody>

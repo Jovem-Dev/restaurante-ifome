@@ -9,8 +9,8 @@ import Breadcrumbs from '../../components/Common/Breadcrumb';
 import logo from "../../assets/images/logoMenor.png";
 import api from "../../services/api"
 
-const excluir = (id) => {
-    api.delete(`/api/pedidos/delete/anterior/${id}` )
+async function excluir(id){
+    const response = await api.delete(`/pedidos/${id}`);
     window.location.href('./pedidos-entregues')
 }
 var storageLogado = localStorage.getItem('usuarioLogado')
@@ -22,11 +22,8 @@ class PedidoAnteriorDetalhe extends Component {
     
 
     async componentDidMount() {
-        fetch(`https://api.ifome.net/api/get/anterior/${this.props.id}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ pedidosAnteriores: data })
-        })
+        const response = await api.get(`/pedidos/entregueRestauranteDetalhe/${this.props.id}`)
+        this.setState({ pedidosAnteriores: response.data })
     }
     constructor() {
         super();
@@ -94,7 +91,6 @@ class PedidoAnteriorDetalhe extends Component {
                                             <div className="d-print-none">
                                                 <div className="float-left">
                                                     <Link to="#" onClick={this.printInvoice} className="btn btn-success waves-effect waves-light mr-2"><i className="fa fa-print"></i></Link>
-                                                    <Link to="#" className="btn btn-primary w-md waves-effect waves-light">Editar</Link>
                                                     <Link onClick={() => excluir(pedidosAnteriores.id)} className="btn btn-danger w-md waves-effect waves-light">Excluir</Link>
                                                 </div>
                                             </div>

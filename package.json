@@ -85,7 +85,6 @@
     "toastr": "^2.1.4"
   },
   "scripts": {
-    "prestart": "npm install",
     "start": "npm run-script run",
     "build": "react-scripts build",
     "test": "react-scripts test",

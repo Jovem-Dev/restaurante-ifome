@@ -10,9 +10,8 @@ import logo from "../../assets/images/logoMenor.png";
 import api from "../../services/api"
 
 var storageLogado = localStorage.getItem('usuarioLogado')
-const excluir = (id) => {
-    api.delete(`/api/promocoes/delete/${id}/${storageLogado}` )
-    window.location.href('./promocoes-list')
+async function excluir(id){
+    const response = await api.delete(`/promocoes/${id}`);
 }
 
 class PromocaoDetalhe extends Component {
@@ -24,11 +23,8 @@ class PromocaoDetalhe extends Component {
   
 
     async componentDidMount() {
-        fetch(`https://api.ifome.net/api/promocoes/get/${this.props.id}/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ promocoes: data })
-        })
+        const response = await api.get(`/promocoes/${this.props.id}`)
+        this.setState({ promocoes: response.data })
        
     }
     constructor() {
@@ -66,27 +62,21 @@ class PromocaoDetalhe extends Component {
                                             </div>
                                             <hr />
                                             <Row>
-                                                <Col xs="6">
+                                                <Col xs="8">
                                                     <address>
                                                         <strong>Informações:</strong><br />
-                                                    {promocao.nome}<br />
+                                                    {promocao.categoria}<br />
                                                     
                                                    
                                                 </address>
                                                 </Col>
-                                                <Col xs="6" className="text-right">
-                                                    <address>
-                                                    <strong>Categoria:</strong><br />
-                                                    {promocao.categoria}<br /><br />
-                                                </address>
-                                                </Col>
+                                               
                                             </Row>
                                             
                                           
                                             <div className="d-print-none">
                                                 <div className="float-left">
                                                     <Link to="#" onClick={this.printInvoice} className="btn btn-success waves-effect waves-light mr-2"><i className="fa fa-print"></i></Link>
-                                                    <Link to="#" className="btn btn-primary w-md waves-effect waves-light">Editar</Link>
                                                     <Link onClick={() => excluir(promocao.id)} className="btn btn-danger w-md waves-effect waves-light">Excluir</Link>
                                                 </div>
                                             </div>

@@ -17,11 +17,8 @@ class ListarOfertas extends Component {
     }
      
     async componentDidMount(){
-        fetch(`https://api.ifome.net/api/ofertas/get/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ ofertas: data })
-        })
+        const response = await api.get("/ofertas")
+        this.setState({ ofertas: response.data })
     }
     render() {
         return (

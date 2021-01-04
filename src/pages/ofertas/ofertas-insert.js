@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import api from '../../services/api';
 
+var storageLogado = localStorage.getItem('usuarioLogado')
 export default function CadastrarOfertas() {
     const [nome, setNome] = useState(""); // escuta o que o usuario digita
     const [preco, setPreco] = useState("");
@@ -20,27 +21,27 @@ export default function CadastrarOfertas() {
     const [novoPreco, setNovoPreco] = useState("");
     const [ingredientes, setIngredientes] = useState("");
     const [tempo, setTempo] = useState("");
-    const restaurante = "Mc Donald´s" // aqui vai entrar o restaurantes que esta logado
+    const restaurante = storageLogado // aqui vai entrar o restaurantes que esta logado
    
-    async function handleSubmit(){
-        const data = {
-          nome: nome, 
-          url: url,
-          preço: preco, 
-          novo_preco: novoPreco,
-          restaurante: restaurante,
-          ingredientes: ingredientes,
-          tempo: tempo
-          
-        }
-        const response = await api.post(`/api/ofertas/insert`, data).then(() =>{
-          alert("Oferta Cadastrada com sucesso")
-          window.location.reload()
-          window.location.href="/"
-        }).catch((e) =>{
-          console.log(e.Message)
-        })
-      }  
+        async function handleSubmit(){
+            const body = {
+                nome: nome, 
+                url: url,
+                preço: preco, 
+                novo_preco: novoPreco,
+                restaurante: restaurante,
+                ingredientes: ingredientes,
+                tempo: tempo
+            };
+        
+            const responsePedido = api.post("/ofertas", body).then(() =>{
+                alert("Oferta Cadastrada com sucesso")
+                window.location.reload()
+                window.location.href="/dashboard"
+            }).catch((e) =>{
+                console.log(e.Message)
+            });
+        }  
         
         return (
             

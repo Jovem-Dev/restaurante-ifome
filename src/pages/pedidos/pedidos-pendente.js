@@ -13,18 +13,17 @@ import CardInvoice from "./card-invoice-pendente"
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
 import api from "../../services/api"
 var storageLogado = localStorage.getItem('usuarioLogado')
+
 class PedidosPendente extends Component {
     state = {
         pedidosPendentes: []
     }
      
     async componentDidMount(){
-        fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ pedidosPendentes: data })
-        })
+        const response = await api.get(`/pedidos/pendenteRestaurante/${storageLogado}`)
+        this.setState({ pedidosPendentes: response.data })
     }
+  
     render() {
         return (
             <React.Fragment>

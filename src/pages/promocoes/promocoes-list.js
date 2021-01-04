@@ -18,12 +18,10 @@ class ListarPromocoes extends Component {
     }
      
     async componentDidMount(){
-        fetch(`https://api.ifome.net/api/promocoes/get/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ promocoes: data })
-        })
-       
+
+        const response = await api.get("/promocoes")
+        this.setState({ promocoes: response.data })
+        
     }
     render() {
         return (

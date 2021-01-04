@@ -12,11 +12,11 @@ class CardInvoiceAnterior extends Component {
         return (
             <React.Fragment>
                 <Router>
-                <Col xl="4" sm="4">
+                <Col xl="6" sm="6">
                     <Card >
                         <CardBody>
                             <Row>
-                                <Col lg="4">
+                                <Col lg="6">
                                     <div className="text-lg-center">
                                         {
                                             this.props.data.url !== "Null"

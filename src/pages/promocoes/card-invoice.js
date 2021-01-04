@@ -28,7 +28,6 @@ class CardInvoice extends Component {
                                                 </div>
                                         }
 
-                                        <h5 className="mb-1 font-size-15 text-truncate">{this.props.data.nome}</h5>
                                         <Link to="#" className="text-muted">Jovem Dev</Link>
                                     </div>
                                 </Col>

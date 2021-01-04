@@ -29,104 +29,57 @@ function Dashboard() {
     var mesAtual = dataLib.getMonth();
 
     const [count, setCount] = useState([])
-    const [countVendas, setCountVendas] = useState([])
     const [countVendasPendentes, setCountVendasPendentes] = useState([])
-    const [countVendasEntregues, setCountVendasEntregues] = useState([])
     const [countVendasAndamento, setCountVendasAndamento] = useState([])
-    const [countVendasMesAtual, setCountVendasMesAtual] = useState([])
-    const [vendasMesAtual, setVendasMesAtual] = useState([])
     const [pedidosPendentes, setPedidosPendentes] = useState([])
+    const [pedidosEntregues, setPedidosEntregues] = useState([])
     var storageLogado = localStorage.getItem('usuarioLogado')
-    const url = `/api/get/todos/${storageLogado}`
    
     useEffect(() => {
              
-        fetch(`https://api.ifome.net/api/get/todos/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCount(data)
-        })
-        fetch(`https://api.ifome.net/api/pedidos/count/vendas/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCountVendas(data)
-        })
-        fetch(`https://api.ifome.net/api/pedidos/count/vendas/entegues/grafico/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCountVendasEntregues(data)
-        })
-        fetch(`https://api.ifome.net/api/pedidos/count/vendas/pendentes/grafico/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCountVendasPendentes(data)
-        })
-        fetch(`https://api.ifome.net/api/pedidos/count/vendas/andamento/grafico/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCountVendasAndamento(data)
-        })
-        fetch(`https://api.ifome.net/api/pedidos/vendas/mes/grafico/${mesAtual}/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setCountVendasMesAtual(data)
-        })
-        fetch(`https://api.ifome.net/api/get/mesAtual/${mesAtual}/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setVendasMesAtual(data)
-        })
-        fetch(`https://api.ifome.net/api/get/pendente/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            setPedidosPendentes(data)
-        })
+        async function loadCount(){
+            const response = await api.get(`/pedidos/countEntregues/${storageLogado}`, )
+            setCount(response.data)
+        }
+        loadCount();
+        async function loadCountPendentes(){
+            const response = await api.get(`/pedidos/countPendentes/${storageLogado}`)
+            setCountVendasPendentes(response.data)
+        }
+        loadCountPendentes();
+        async function loadCountAndamento(){
+            const response = await api.get(`/pedidos/countAndamento/${storageLogado}`)
+            setCountVendasAndamento(response.data)
+        }
+        loadCountAndamento();
+    
+        async function loadPendentes(){
+            const response = await api.get(`/pedidos/pendenteRestaurante/${storageLogado}`)
+            setPedidosPendentes(response.data)
+        }
+        loadPendentes();
+
+        async function loadEntregues(){
+            const response = await api.get(`/pedidos/entregueRestaurante/${storageLogado}`)
+            setPedidosEntregues(response.data)
+        }
+        loadEntregues();
+
+        
     
     }, [])
 
-    const valorPedidos = count.map(count => (count.valor))
-    // usando o reduce para somar os objetos de dentro do array
-    const total = valorPedidos.reduce(function (total, numero) {
-        return total + numero;
-    }, 0);
-
+    var pedidosValor = pedidosEntregues.map(count => (count.valor))
+    var total = 0;
+    for ( var i = 0; i < pedidosValor.length; i++ ){
+       total += pedidosValor[i];
+    }
     const faturamento = total
-    const porcentagem = total / 100
-    const comissao = porcentagem * 12
-    const mediaMensal = faturamento / 12
-
-    const valorPedidosMesAtual = vendasMesAtual.map(count => (count.valor))
-
-    const totalMesAtual = valorPedidosMesAtual.reduce(function (total, numero) {
-        return total + numero;
-    }, 0);
-
-    const faturamentoMesAtual = totalMesAtual
-
+    const mediaMensal = faturamento / 12; 
 
     const [statusRestaurante, setStatusRestaurante] = useState("Fechado")
     const [corStatusRestaurante, setCorStatusRestaurante] = useState("danger")
-    const aberto = "Aberto"
-    const fechado = "Fechado"
-    const AbrirRestaurante = (nome) => {
-        api.put(`api/put/statusRestaurante/${nome}/${aberto}`)
-        setStatusRestaurante("Aberto")
-        setCorStatusRestaurante("success")
-        api.put(`api/put/statusRestauranteOferta/${nome}/${aberto}`)
-
-
-    };
-    const FecharRestaurante = (nome) => {
-        api.put(`api/put/statusRestaurante/${nome}/${fechado}`)
-        setStatusRestaurante("Fechado")
-        setCorStatusRestaurante("danger")
-        api.put(`api/put/statusRestauranteOferta/${nome}/${fechado}`)
-
-    };
-
-    const FecharNotificacao = (nome) => {
-        api.put(`api/put/fecharNotificacao/${nome}/`)
-    }
+   
 
     return (
 
@@ -150,36 +103,18 @@ function Dashboard() {
 
                         <Col xl="12">
                             <Row>
-                                <Col md="4">
-
-                                    <Button onClick={() => { AbrirRestaurante(storageLogado) }} type="button" color="primary" size="sm" className="btn-rounded btn-success waves-effect waves-light mb-4">
-                                        Abrir Restaurante
-                                    </Button>
-                                    <Button onClick={() => { FecharRestaurante(storageLogado) }} type="button" color="primary" size="sm" className="btn-rounded btn-danger waves-effect waves-light mb-4 ml-2">
-                                        Fechar Restaurante
-                                    </Button>
-
-                                </Col>
-                                <Col md="4">
-                                    <p className="text-muted font-weight-medium">Status do Restaurante: <span className="font-weight-bold">{statusRestaurante}</span></p>
-
-                                </Col>
-                                <Col md="4">
-                                    <Button type="button" color="primary" size="sm" className={"btn waves-effect waves-light ml-2 w-25 btn-" + corStatusRestaurante}>
-
-                                    </Button>
-                                </Col>
+                               
                                 {/* Reports Render */}
                                 {/* {countPedidos.map(countPedido => (  */}
-                                <Col md="4">
+                                <Col md="6">
 
-                                    {countVendas.map(count => (
+                                  
                                         <Card className="mini-stats-wid">
                                             <CardBody>
                                                 <Media>
                                                     <Media body>
                                                         <p className="text-muted font-weight-medium">Total de Vendas</p>
-                                                        <h4 className="mb-0">{count.NumeroDePedidos}</h4>
+                                                        <h4 className="mb-0">{count}</h4>
                                                     </Media>
                                                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                                                         <span className="avatar-title">
@@ -189,17 +124,17 @@ function Dashboard() {
                                                 </Media>
                                             </CardBody>
                                         </Card>
-                                    ))}
+                                  
                                 </Col>
 
                                 {/* ))}  */}
-                                <Col md="4" >
+                                <Col md="6" >
                                     <Card className="mini-stats-wid">
                                         <CardBody>
                                             <Media>
                                                 <Media body>
                                                     <p className="text-muted font-weight-medium">Faturamento em Vendas</p>
-                                                    <h4 className="mb-0">R${faturamento}</h4>
+                                                    <h4 className="mb-0">R$ {faturamento}</h4>
                                                 </Media>
                                                 <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                                                     <span className="avatar-title">
@@ -210,23 +145,7 @@ function Dashboard() {
                                         </CardBody>
                                     </Card>
                                 </Col>
-                                <Col md="4" >
-                                    <Card className="mini-stats-wid">
-                                        <CardBody>
-                                            <Media>
-                                                <Media body>
-                                                    <p className="text-muted font-weight-medium">Comissão da Plataforma</p>
-                                                    <h4 className="mb-0">R${comissao.toFixed(2)}</h4>
-                                                </Media>
-                                                <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                                                    <span className="avatar-title">
-                                                        <i className={"bx bx-purchase-tag-alt font-size-24"}></i>
-                                                    </span>
-                                                </div>
-                                            </Media>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
+                               
 
                                 <Col xl="4">
                                     <Card>
@@ -235,28 +154,28 @@ function Dashboard() {
                                             <Row className="justify-content-center">
 
                                                 <Col sm={4}>
-                                                    {countVendasEntregues.map(count => (
+                                                   
                                                         <div className="text-center">
-                                                            <h5 className="mb-0 font-size-20">{count.NumeroDePedidosEntregues}</h5>
+                                                            <h5 className="mb-0 font-size-20">{count}</h5>
                                                             <p className="text-muted">Entregues</p>
                                                         </div>
-                                                    ))}
+                                                  
                                                 </Col>
                                                 <Col sm={4}>
-                                                    {countVendasPendentes.map(count => (
+                                                    
                                                         <div className="text-center">
-                                                            <h5 className="mb-0 font-size-20">{count.NumeroDePedidosPendentes}</h5>
+                                                            <h5 className="mb-0 font-size-20">{countVendasPendentes}</h5>
                                                             <p className="text-muted">Pendentes</p>
                                                         </div>
-                                                    ))}
+                                                 
                                                 </Col>
                                                 <Col sm={4}>
-                                                    {countVendasAndamento.map(count => (
+                                              
                                                         <div className="text-center">
-                                                            <h5 className="mb-0 font-size-20">{count.NumeroDePedidosAndamento}</h5>
+                                                            <h5 className="mb-0 font-size-20">{countVendasAndamento}</h5>
                                                             <p className="text-muted">Andamento</p>
                                                         </div>
-                                                    ))}
+                                                 
                                                 </Col>
                                             </Row>
                                             <PieChart />
@@ -268,24 +187,19 @@ function Dashboard() {
                                         <CardBody>
                                             <CardTitle className="mb-4">Faturamento</CardTitle>
                                             <Row className="justify-content-center">
-                                                <Col sm={4}>
+                                                <Col sm={6}>
                                                     <div className="text-center">
-                                                        <h5 className="mb-0 font-size-20">R${faturamento}</h5>
+                                                        <h5 className="mb-0 font-size-20">R$ {faturamento}</h5>
                                                         <p className="text-muted">Ao todo</p>
                                                     </div>
                                                 </Col>
-                                                <Col sm={4}>
+                                                <Col sm={6}>
                                                     <div className="text-center">
-                                                        <h5 className="mb-0 font-size-20">R${mediaMensal.toFixed(2)}</h5>
+                                                        <h5 className="mb-0 font-size-20">R$ {mediaMensal.toFixed(2)}</h5>
                                                         <p className="text-muted">Média Mensal</p>
                                                     </div>
                                                 </Col>
-                                                <Col sm={4}>
-                                                    <div className="text-center">
-                                                        <h5 className="mb-0 font-size-20">R${faturamentoMesAtual}</h5>
-                                                        <p className="text-muted">Mês atual</p>
-                                                    </div>
-                                                </Col>
+                                               
                                             </Row>
 
                                             <LineChart />
@@ -293,9 +207,7 @@ function Dashboard() {
                                     </Card>
                                 </Col>
 
-                                <Col lg="12">
-                                    <LatestTranaction />
-                                </Col>
+                                
                             </Row>
 
 

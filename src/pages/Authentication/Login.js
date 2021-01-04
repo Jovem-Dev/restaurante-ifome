@@ -29,7 +29,7 @@ function Login() {
     
    
     const loginFun = () => {
-        api.post("/api/login/restaurante", { nome: nome, senha: senha }).then((response) => {
+        api.post("/loginRestaurante", { nome: nome, senha: senha }).then((response) => {
             if (response.data.message) {
                 console.log(response.data.message)
                 window.location.href = "/login"

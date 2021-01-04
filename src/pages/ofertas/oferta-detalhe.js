@@ -10,8 +10,8 @@ import logo from "../../assets/images/logoMenor.png";
 import api from "../../services/api"
 
 var storageLogado = localStorage.getItem('usuarioLogado')
-const excluir = (id) => {
-    api.delete(`/api/ofertas/delete/${id}/${storageLogado}` )
+async function excluir(id){
+    const response = await api.delete(`/ofertas/${id}`)
     window.location.href('./ofertas-list')
 }
 class OfertaDetalhe extends Component {
@@ -20,13 +20,10 @@ class OfertaDetalhe extends Component {
         ofertas: []
     }
   
-
+   
     async componentDidMount() {
-        fetch(`https://api.ifome.net/api/ofertas/get/${this.props.id}/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ ofertas: data })
-        })
+        const response = await api.get(`/ofertas/${this.props.id}`)
+        this.setState({ ofertas: response.data })
     }
     constructor() {
         super();
@@ -93,7 +90,6 @@ class OfertaDetalhe extends Component {
                                             <div className="d-print-none">
                                                 <div className="float-left">
                                                     <Link to="#" onClick={this.printInvoice} className="btn btn-success waves-effect waves-light mr-2"><i className="fa fa-print"></i></Link>
-                                                    <Link to="#" className="btn btn-primary w-md waves-effect waves-light">Editar</Link>
                                                     <Link onClick={() => excluir(ofertas.id)} className="btn btn-danger w-md waves-effect waves-light">Excluir</Link>
                                                 </div>
                                             </div>

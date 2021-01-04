@@ -19,11 +19,8 @@ class PedidosEntregues extends Component {
     }
      
     async componentDidMount(){
-        fetch(`https://api.ifome.net/api/get/anterior/${storageLogado}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ pedidosEntregues: data })
-        })
+        const response = await api.get(`/pedidos/entregueRestaurante/${storageLogado}`)
+        this.setState({ pedidosEntregues: response.data })
         
     }
     render() {

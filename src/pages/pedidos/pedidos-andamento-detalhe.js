@@ -17,13 +17,9 @@ class PedidosAndamentoDetalhe extends Component {
   
 
     async componentDidMount() {
-        fetch(`https://api.ifome.net/api/pedidos/get/${this.props.id}`)
-        .then( res => res.json())
-        .then((data) =>{
-            this.setState({ pedidosAndamento: data })
-        })
-        
-       
+        const response = await api.get(`/pedidos/andamentoRestauranteDetalhe/${this.props.id}`)
+        this.setState({ pedidosAndamento: response.data })
+               
     }
     constructor() {
         super();
@@ -91,8 +87,7 @@ class PedidosAndamentoDetalhe extends Component {
                                             <div className="d-print-none">
                                                 <div className="float-left">
                                                     <Link to="#" onClick={this.printInvoice} className="btn btn-success waves-effect waves-light mr-2"><i className="fa fa-print"></i></Link>
-                                                    <Link to="#" className="btn btn-primary w-md waves-effect waves-light">Editar</Link>
-                                                    
+                                                                                                       
                                                 </div>
                                             </div>
                                         </CardBody>

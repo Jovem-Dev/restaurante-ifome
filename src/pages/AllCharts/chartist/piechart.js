@@ -10,14 +10,14 @@ class piechart extends Component {
     pedidosEntregues: []
   }
   async componentDidMount() {
-    const responsePendentes = await api.get(`/api/pedidos/count/vendas/pendentes/grafico/${storageLogado}`)
-    this.setState({ pedidosPendentes: responsePendentes.data })
+    const responsePen = await api.get(`/pedidos/countPendentes/${storageLogado}`)
+    this.setState({ pedidosPendentes: responsePen.data })
 
-    const responseAndamento = await api.get(`/api/pedidos/count/vendas/andamento/grafico/${storageLogado}`)
-    this.setState({ pedidosAndamento: responseAndamento.data })
-
-    const responseEntregues = await api.get(`/api/pedidos/count/vendas/entegues/grafico/${storageLogado}`)
-    this.setState({ pedidosEntregues: responseEntregues.data })
+    const responseAnd = await api.get(`/pedidos/countAndamento/${storageLogado}`)
+    this.setState({ pedidosAndamento: responseAnd.data })
+    
+    const responseEnt = await api.get(`/pedidos/countEntregues/${storageLogado}`)
+    this.setState({ pedidosEntregues: responseEnt.data })
 
   }
 
@@ -27,7 +27,7 @@ class piechart extends Component {
     const { pedidosEntregues } = this.state;
     var pieChartData = {
       
-      series: [`${pedidosPendentes.map(count => (count.NumeroDePedidosPendentes))}`, `${pedidosAndamento.map(count => (count.NumeroDePedidosAndamento))}`, `${pedidosEntregues.map(count => (count.NumeroDePedidosEntregues))}`],
+      series: [`${pedidosPendentes}`, `${pedidosAndamento}`, `${pedidosEntregues}`],
       labels: ["Pen", "And", 'Ent']
     };
     var pieChartOptions = {

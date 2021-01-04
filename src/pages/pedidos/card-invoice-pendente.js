@@ -5,19 +5,16 @@ import api from '../../services/api';
 import PedidosPendenteDetalhe from './pedidos-pendente-detalhe';
 
 var storageLogado = localStorage.getItem('usuarioLogado')
-const EditPedido = (id) => {
-    api.put(`api/put/pendente/${id}/${storageLogado}`).then((err, result) =>{
-      console.log('Editado com sucesso')
-      window.location.href="/dashboard"
-      document.location.reload()
-    })
+
+async function EditPedido(id){
+    const body = {
+        status: "Andamento",
+        status_cor: "success"
+      };
+      const response = await api.put(`/pedidos/${id}`, body)
 };
-const DeletePedido = (id)=>{
-    api.delete(`api/delete/${id}/${storageLogado}`).then((err, result) =>{
-        console.log('Editado com sucesso')
-        window.location.href="/dashboard"
-        document.location.reload()
-    })
+async function DeletePedido(id){
+    const response = await api.delete(`/pedidos/${id}`)
 }
 class CardInvoicePendente extends Component {
 

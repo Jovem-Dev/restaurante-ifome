@@ -13,20 +13,24 @@ import "react-datepicker/dist/react-datepicker.css";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import api from '../../services/api';
 
+var storageLogado = localStorage.getItem('usuarioLogado')
 export default function CadastrarPromocoes() {
     const [nome, setNome] = useState(""); // escuta o que o usuario digita
     const [categoria, setCategoria] = useState("");
     const [url, setUrl] = useState("");
-    const restaurante = "Mc Donald´s" // aqui vai entrar o restaurantes que esta logado
+    const restaurante = storageLogado // aqui vai entrar o restaurantes que esta logado
    
     async function handleSubmit(){
-        const data = {
-          nome: nome, 
-          categoria: categoria, 
-          restaurante: restaurante,
-          url: url
-        }
-        const response = await api.post(`/api/promocoes/insert`, data).then(() =>{
+
+        const body = {
+            nome: nome, 
+            categoria: categoria, 
+            restaurante: restaurante,
+            url: url
+        };
+    
+          
+        const response = await api.post(`promocoes`, body).then(() =>{
           alert("Promoção Cadastrada com sucesso")
           window.location.reload()
           window.location.href="#"

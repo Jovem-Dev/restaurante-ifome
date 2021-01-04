@@ -16,13 +16,12 @@ import api from "../../services/api"
 var storageLogado = localStorage.getItem('usuarioLogado')
 class PedidosAndamento extends Component {
     state = {
-        pedidosPendentes: []
+        pedidosAndamento: []
     }
      
     async componentDidMount(){
-        const response = await api.get(`/api/get/${storageLogado}`)
-        this.setState({pedidosPendentes: response.data })
-        console.log(response.data)
+        const response = await api.get(`/pedidos/andamentoRestaurante/${storageLogado}`)
+        this.setState({ pedidosAndamento: response.data })
     }
     render() {
         return (
@@ -35,7 +34,7 @@ class PedidosAndamento extends Component {
 
                         <Row>
                             {
-                                this.state.pedidosPendentes.map((invoice) =>
+                                this.state.pedidosAndamento.map((invoice) =>
                                     <CardInvoice data={invoice} />
                                 )
                             }

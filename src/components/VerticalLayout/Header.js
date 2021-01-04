@@ -91,7 +91,7 @@ class Header extends Component {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box">
-                <Link to="/" className="logo logo-dark">
+                <Link to="/dashboard" className="logo logo-dark">
                   <span className="logo-sm">
                     <img src={logoMenor} alt="" height="22" />
                   </span>
@@ -100,7 +100,7 @@ class Header extends Component {
                   </span>
                 </Link>
 
-                <Link to="/" className="logo logo-light">
+                <Link to="/dashboard" className="logo logo-light">
                   <span className="logo-sm">
                     <img src={logoMenor} alt="" height="22" />
                   </span>
